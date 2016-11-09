@@ -47,6 +47,10 @@
   return self.stateTitles[@(state)];
 }
 
+- (NSString *)titleForMJState:(MJRefreshState)state {
+    return self.stateTitles[@(state)];
+}
+
 #pragma mark - 重写父类的方法
 - (void)prepare
 {

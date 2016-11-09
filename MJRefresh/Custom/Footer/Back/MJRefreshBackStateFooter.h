@@ -15,5 +15,6 @@
 - (void)setTitle:(NSString *)title forState:(MJRefreshState)state;
 
 /** 获取state状态下的title */
-- (NSString *)titleForState:(MJRefreshState)state;
+//- (NSString *)titleForState:(MJRefreshState)state;
+- (NSString *)titleForMJState:(MJRefreshState)state;
 @end

@@ -67,7 +67,7 @@
 {
     [super scrollViewContentOffsetDidChange:change];
     
-    if (self.state != MJRefreshStateIdle || !self.automaticallyRefresh || self.mj_y == 0) return;
+    if (self.state != MJRefreshStateIdle || self.state != MJRefreshStateStop|| !self.automaticallyRefresh || self.mj_y == 0) return;
     
     if (_scrollView.mj_insetT + _scrollView.mj_contentH > _scrollView.mj_h) { // 内容超过一个屏幕
         // 这里的_scrollView.mj_contentH替换掉self.mj_y更为合理
