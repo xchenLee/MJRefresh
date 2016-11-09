@@ -97,21 +97,14 @@
     
     // 根据状态做事情
     if (state == MJRefreshStateIdle) {
-        if (oldState != MJRefreshStateRefreshing) return;
+        //现在是idle状态，之前是refreshing,就开始回滚
+        if (oldState != MJRefreshStateRefreshing) {
+            if (oldState != MJRefreshStateStop) {
+                return;
+            }
+        }
+        [self rollBack];
         
-        // 保存刷新时间
-        [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:self.lastUpdatedTimeKey];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        
-        // 恢复inset和offset
-        [UIView animateWithDuration:MJRefreshSlowAnimationDuration animations:^{
-            self.scrollView.mj_insetT -= self.mj_h;
-            
-            // 自动调整透明度
-            if (self.isAutomaticallyChangeAlpha) self.alpha = 0.0;
-        } completion:^(BOOL finished) {
-            self.pullingPercent = 0.0;
-        }];
     } else if (state == MJRefreshStateRefreshing) {
         [UIView animateWithDuration:MJRefreshFastAnimationDuration animations:^{
             // 增加滚动区域
@@ -123,7 +116,31 @@
         } completion:^(BOOL finished) {
             [self executeRefreshingCallback];
         }];
+    } else if (state == MJRefreshStateStop) {
+        
+        if (oldState != MJRefreshStateRefreshing) {
+            return;
+        }
+        [self rollBack];
     }
+}
+
+- (void)rollBack {
+    // 保存刷新时间
+    [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:self.lastUpdatedTimeKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    // 恢复inset和offset
+    [UIView animateWithDuration:MJRefreshSlowAnimationDuration animations:^{
+        if (self.scrollView.mj_insetT != 0) {
+            self.scrollView.mj_insetT -= self.mj_h;
+        }
+        
+        // 自动调整透明度
+        if (self.isAutomaticallyChangeAlpha) self.alpha = 0.0;
+    } completion:^(BOOL finished) {
+        self.pullingPercent = 0.0;
+    }];
 }
 
 #pragma mark - 公共方法
@@ -131,10 +148,19 @@
 {
     if ([self.scrollView isKindOfClass:[UICollectionView class]]) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [super endRefreshing];
+            [self setState:MJRefreshStateStop];
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [super endRefreshing];
+            });
+            
         });
     } else {
-        [super endRefreshing];
+        [self setState:MJRefreshStateStop];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [super endRefreshing];
+        });
     }
 }
 

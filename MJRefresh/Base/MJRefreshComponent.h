@@ -23,6 +23,7 @@ typedef enum {
     MJRefreshStateRefreshing,
     /** 即将刷新的状态 */
     MJRefreshStateWillRefresh,
+    MJRefreshStateStop,
     /** 所有数据加载完毕，没有更多的数据了 */
     MJRefreshStateNoMoreData
 } MJRefreshState;

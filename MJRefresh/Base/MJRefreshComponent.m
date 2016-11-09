@@ -136,6 +136,7 @@
 #pragma mark 进入刷新状态
 - (void)beginRefreshing
 {
+    self.state = MJRefreshStateIdle;
     [UIView animateWithDuration:MJRefreshFastAnimationDuration animations:^{
         self.alpha = 1.0;
     }];
