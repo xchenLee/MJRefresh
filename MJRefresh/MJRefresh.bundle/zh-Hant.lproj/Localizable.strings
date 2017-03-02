@@ -4,7 +4,7 @@
 
 "MJRefreshAutoFooterIdleText" = "Tap or pull up to load more";
 "MJRefreshAutoFooterRefreshingText" = "Loading...";
-"MJRefreshAutoFooterNoMoreDataText" = "No more data";
+"MJRefreshAutoFooterNoMoreDataText" = " ";
 
 "MJRefreshBackFooterIdleText" = "Pull up to load more";
 "MJRefreshBackFooterPullingText" = "Release to load more.";
