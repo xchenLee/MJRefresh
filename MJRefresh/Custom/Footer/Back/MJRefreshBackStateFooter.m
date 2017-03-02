@@ -56,10 +56,10 @@
     self.labelLeftInset = MJRefreshLabelLeftInset;
     
     // 初始化文字
-    [self setTitle:[NSBundle mj_localizedStringForKey:MJRefreshBackFooterIdleText] forState:MJRefreshStateIdle];
-    [self setTitle:[NSBundle mj_localizedStringForKey:MJRefreshBackFooterPullingText] forState:MJRefreshStatePulling];
-    [self setTitle:[NSBundle mj_localizedStringForKey:MJRefreshBackFooterRefreshingText] forState:MJRefreshStateRefreshing];
-    [self setTitle:[NSBundle mj_localizedStringForKey:MJRefreshBackFooterNoMoreDataText] forState:MJRefreshStateNoMoreData];
+    [self setTitle:@"Pull up to load more" forState:MJRefreshStateIdle];
+    [self setTitle:@"Release to load more" forState:MJRefreshStatePulling];
+    [self setTitle:@"Loading" forState:MJRefreshStateRefreshing];
+    [self setTitle:@"" forState:MJRefreshStateNoMoreData];
 }
 
 - (void)placeSubviews
