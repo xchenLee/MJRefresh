@@ -57,11 +57,15 @@
 - (void)setState:(MJRefreshState)state
 {
     MJRefreshCheckState
-    
     // 根据状态做事情
+    if (state == MJRefreshStateNoMoreData) {
+        self.stateLabel.hidden = YES;
+    }
     if (state == MJRefreshStateNoMoreData || state == MJRefreshStateIdle) {
+        self.stateLabel.hidden = NO;
         [self.loadingView stopAnimating];
     } else if (state == MJRefreshStateRefreshing) {
+        self.stateLabel.hidden = NO;
         [self.loadingView startAnimating];
     }
 }
